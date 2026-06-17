@@ -275,258 +275,7 @@
 
           <!-- RIGHT FORM (your existing form kept as-is) -->
           <div class="lg:col-span-4">
-            <div class="enquiry_form">
-              <div class="form-container" id="frmContact" style="background:#FFF; border-radius:0 0 20px 20px;">
-
-
-                <div class="bg-[#573865] text-white text-center py-4 px-6" style="border-radius: 20px 20px 0 0;">
-                  <h3 class="text-lg md:text-xl font-bold">Get Your Brochure</h3>
-                </div>
-                <div id="lsq-form-wrapper" class="lsq-form-wrapper" style="max-width: 400px; margin: 0 auto;">
-                  <div class="form-block-holder block-inner-content"
-                    style="min-height: 150px; margin-left: 15px; margin-right: 15px; filter: none; background-image: none; background-position: 0% 0%; background-repeat: no-repeat;"
-                    data-hover-bg-color="#f7f7f7" data-bg-color-type="solid">
-
-                    <form id="frmrlp-block-41" class="w-full p-3">
-
-                      <!-- Name -->
-                      <div class="field-control-group">
-
-                        <label for="FirstName" class="block mb-[2px] text-[12px] text-[#777]">
-                          Name *
-                        </label>
-
-                        <div class="field-control">
-
-                          <input type="text" id="FirstName" name="FirstName" maxlength="100" autocomplete="off" required
-                            class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
-
-                        </div>
-
-                        <div class="field-validation-messages" style="display:none;">
-                          <label class="validation-msg"></label>
-                        </div>
-
-                      </div>
-
-                      <!-- Email -->
-                      <div class="field-control-group">
-
-                        <label for="EmailAddress" class="block mb-[2px] text-[12px] text-[#777] font-[Open_Sans]">
-                          Email *
-                        </label>
-
-                        <div class="field-control">
-
-                          <input type="email" id="EmailAddress" name="EmailAddress" maxlength="100" autocomplete="off"
-                            required
-                            class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
-
-                        </div>
-
-                        <div class="field-validation-messages" style="display:none;">
-                          <label class="validation-msg"></label>
-                        </div>
-
-                      </div>
-
-                      <!-- Phone -->
-                      <div class="field-control-group">
-
-                        <label for="Phone" class="block mb-[2px] text-[12px] text-[#777]">
-                          Phone Number *
-                        </label>
-
-                        <div class="field-control">
-
-                          <input type="tel" id="Phone" name="Phone" maxlength="10" autocomplete="off" required
-                            class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
-
-                        </div>
-
-                        <div class="field-validation-messages" style="display:none;">
-                          <label class="validation-msg"></label>
-                        </div>
-
-                      </div>
-
-                      <!-- Qualification -->
-                      <div class="field-control-group">
-
-                        <label for="mx_Highest_Qualification" class="block mb-[2px] text-[12px] text-[#777]">
-                          Highest qualification completed *
-                        </label>
-
-                        <div class="field-control">
-
-                          <select id="mx_Highest_Qualification" name="mx_Highest_Qualification" required
-                            class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
-
-                            <option value=""></option>
-
-                            <option value="Graduation completed">
-                              Graduation completed
-                            </option>
-
-                            <option value="Post-graduation completed">
-                              Post-graduation completed
-                            </option>
-
-                            <option value="Currently pursuing graduation">
-                              Currently pursuing graduation
-                            </option>
-
-                            <option value="12th / Diploma only">
-                              12th / Diploma only
-                            </option>
-
-                          </select>
-
-                        </div>
-
-                        <div class="field-validation-messages" style="display:none;">
-                          <label class="validation-msg"></label>
-                        </div>
-
-                      </div>
-
-                      <!-- Hidden Lead Type -->
-                      <input type="hidden" id="mx_Lead_Type" name="mx_Lead_Type" value="Graduate Lead">
-
-                      <!-- Qualification Message -->
-                      <div id="qual-block-msg" style="display:none;"
-                        class="px-[12px] py-[10px] border border-[#f5a623] bg-[#fff8e1] text-[12px] text-[#555] rounded-[4px] leading-[1.5]">
-                        This programme requires a completed bachelor's degree. You can still submit your details below —
-                        we'll reach out when a programme suited to your level opens up.
-                      </div>
-
-                      <!-- Year Wrapper -->
-                      <div id="year-of-grad-wrapper" class="field-control-group" style="display:none;">
-
-                        <label for="mx_Year_of_Graduation" class="block mb-[2px] text-[12px] text-[#777]">
-                          Year of graduation *
-                        </label>
-
-                        <input type="hidden" id="mx_Year_of_Graduation" name="mx_Year_of_Graduation">
-
-                        <div class="relative">
-
-                          <!-- Trigger -->
-                          <button type="button" id="year-trigger"
-                            class="relative w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#999] text-[13px] text-left rounded-[4px]">
-                            Select year
-
-                            <span class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[12px]">
-                              ▼
-                            </span>
-
-                          </button>
-
-                          <!-- Year Grid -->
-                          <div id="year-grid" style="display:none;"
-                            class="absolute top-full left-0 right-0 z-50 mt-[3px] p-[5px] border border-[#d8d8d8] bg-white rounded-[4px] max-h-[180px] overflow-y-auto">
-                          </div>
-
-                        </div>
-
-                        <!-- Error -->
-                        <div id="year-error" style="display:none;" class="mt-[4px] text-[11px] text-[#c0392b]">
-                          Please select your year of graduation.
-                        </div>
-
-                        <div class="field-validation-messages" style="display:none;">
-                          <label class="validation-msg"></label>
-                        </div>
-
-                      </div>
-
-                      <!-- Work Experience -->
-                      <div class="field-control-group mb-3">
-
-                        <label for="mx_Work_Experience" class="block mb-[2px] text-[12px] text-[#777]">
-                          Work Experience *
-                        </label>
-
-                        <div class="field-control">
-
-                          <select id="mx_Work_Experience" name="mx_Work_Experience" required
-                            class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
-
-                            <option value=""></option>
-
-                            <option value="Fresher">
-                              Fresher
-                            </option>
-
-                            <option value="0-2 Years">
-                              0-2 Years
-                            </option>
-
-                            <option value="2-5 Years">
-                              2-5 Years
-                            </option>
-
-                            <option value="5+ Years">
-                              5+ Years
-                            </option>
-
-                          </select>
-
-                        </div>
-
-                        <div class="field-validation-messages" style="display:none;">
-                          <label class="validation-msg"></label>
-                        </div>
-
-                      </div>
-
-                      <!-- Consent -->
-                      <div class="mb-[16px]">
-
-                        <label for="mx_I_authorised"
-                          class="flex items-start gap-[8px] text-[12px] text-[#666] leading-[1.6] cursor-pointer">
-
-                          <input type="checkbox" id="mx_I_authorised" name="mx_I_authorised" value="1" required
-                            class="mt-[3px] shrink-0">
-
-                          <span>
-                            I confirm this enquiry is for myself and the details above are mine.*
-                          </span>
-
-                        </label>
-
-                        <div id="auth-error" style="display:none;" class="mt-[4px] text-[11px] text-[#c0392b]">
-                          Please check this box to continue.
-                        </div>
-
-                      </div>
-
-                      <!-- UTM -->
-                      <input type="hidden" name="utm_source">
-                      <input type="hidden" name="utm_medium">
-                      <input type="hidden" name="utm_campaign">
-                      <input type="hidden" name="utm_term">
-                      <input type="hidden" name="utm_content">
-                      <input type="hidden" name="utm_id">
-                      <input type="hidden" name="exact_url">
-                      <input type="hidden" name="search_term">
-
-                      <!-- Submit -->
-                      <button type="submit" id="form-submit-button"
-                        class="mx-auto block min-w-[148px] h-[37px] px-6 bg-[#f68e17] text-white text-[16px] font-bold border border-[#f68e17] rounded-[5px] hover:bg-[#e57f08]">
-                        Submit
-                      </button>
-                    </form>
-
-
-
-
-
-
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div id="heroFormContainer"></div>
           </div>
 
     </section>
@@ -1571,9 +1320,9 @@
 
         <!-- Button -->
         <div class="text-center">
-          <button id="toggleBtn" type="button"
-            class="mx-auto flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-[#573865] text-white font-medium hover:bg-[#4b2f57] transition-colors">
-            Read More
+          <button id="toggleBtn" data-toggle="extraCards" data-scroll="program" type="button" class="mx-auto flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-[#573865] text-white font-medium
+            hover:bg-[#4b2f57] transition-colors">
+            <span class="toggle-text">Read More</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m6 9 6 6 6-6"></path>
@@ -1869,10 +1618,10 @@
 
           <!-- LOAD MORE BUTTON -->
           <div class="pt-2">
-            <button id="curriculumLoadMore" type="button"
+            <button id="curriculumLoadMore" type="button" data-toggle="curriculumMore" aria-expanded="false"
               class="mx-auto flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-[#573865] text-white font-medium hover:bg-[#4b2f57] transition-colors"
               aria-expanded="false" aria-controls="curriculumMore">
-              Read More
+              <span class="toggle-text">Read More</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m6 9 6 6 6-6"></path>
@@ -2222,10 +1971,10 @@
 
         <!-- BUTTON -->
         <div class="text-center mt-8">
-          <button id="toggleFaqBtn" type="button"
+          <button id="toggleFaqBtn" type="button" data-toggle="extraFaqs" data-scroll="faq"
             class="mx-auto flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-[#573865] text-white font-medium hover:bg-[#4b2f57] transition-colors">
 
-            Read More
+            <span class="toggle-text">Read More</span>
 
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-2">
@@ -2292,8 +2041,174 @@
         </div>
       </div>
     </div>
-
   </div>
+
+  <div id="leadPopup" class="fixed inset-0 z-[9999] hidden">
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="bg-white rounded-xl w-full max-w-md">
+        <button id="closePopup" type="button" class="absolute right-4 top-4 text-xl">✕</button>
+        <div id="popupFormContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <template id="leadFormTemplate">
+
+    <div class="enquiry_form">
+      <div class="form-container" id="frmContact" style="background:#FFF; border-radius:0 0 20px 20px;">
+
+
+        <div class="bg-[#573865] text-white text-center py-4 px-6" style="border-radius: 20px 20px 0 0;">
+          <h3 class="text-lg md:text-xl font-bold">Get Your Brochure</h3>
+        </div>
+        <div id="lsq-form-wrapper" class="lsq-form-wrapper" style="max-width: 400px; margin: 0 auto;">
+          <div class="form-block-holder block-inner-content"
+            style="min-height: 150px; margin-left: 15px; margin-right: 15px; filter: none; background-image: none; background-position: 0% 0%; background-repeat: no-repeat;"
+            data-hover-bg-color="#f7f7f7" data-bg-color-type="solid">
+
+            <form class="lead-form w-full p-3">
+
+              <!-- Name -->
+              <div class="field-control-group">
+                <label class="block mb-[2px] text-[12px] text-[#777]">Name *</label>
+                <div class="field-control">
+                  <input type="text" name="name" maxlength="100" autocomplete="off" required
+                    class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
+                </div>
+                <div class="field-validation-messages" style="display:none;">
+                  <label class="validation-msg"></label>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="field-control-group">
+                <label class="block mb-[2px] text-[12px] text-[#777] font-[Open_Sans]">Email *</label>
+                <div class="field-control">
+                  <input type="email" name="email" maxlength="100" autocomplete="off" required
+                    class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
+                </div>
+                <div class="field-validation-messages" style="display:none;">
+                  <label class="validation-msg"></label>
+                </div>
+              </div>
+
+              <!-- Phone -->
+              <div class="field-control-group">
+                <label class="block mb-[2px] text-[12px] text-[#777]">Phone Number *</label>
+                <div class="field-control">
+                  <input type="tel" name="phone" maxlength="10" inputmode="numeric" autocomplete="off" required
+                    class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
+                </div>
+                <div class="field-validation-messages" style="display:none;">
+                  <label class="validation-msg"></label>
+                </div>
+              </div>
+
+              <!-- Qualification -->
+              <div class="field-control-group">
+                <label class="block mb-[2px] text-[12px] text-[#777]">Highest qualification completed *</label>
+                <div class="field-control">
+                  <select name="qualification" required
+                    class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
+                    <option value=""></option>
+                    <option value="Graduation completed">Graduation completed</option>
+                    <option value="Post-graduation completed">Post-graduation completed</option>
+                    <option value="Currently pursuing graduation">Currently pursuing graduation</option>
+                    <option value="12th / Diploma only">12th / Diploma only</option>
+                  </select>
+                </div>
+                <div class="field-validation-messages" style="display:none;">
+                  <label class="validation-msg"></label>
+                </div>
+              </div>
+
+              <!-- Qualification Message -->
+              <div
+                class="qual-block-msg px-[12px] py-[10px] border border-[#f5a623] bg-[#fff8e1] text-[12px] text-[#555] rounded-[4px] leading-[1.5]"
+                style="display:none;">This programme requires a completed bachelor's degree. You can still
+                submit your details below
+                — we'll reach out when a programme suited to your level opens up.</div>
+              <!-- Year Wrapper -->
+              <div class="year-of-grad-wrapper field-control-group" style="display:none;">
+                <label class="block mb-[2px] text-[12px] text-[#777]">Year of graduation *</label>
+                <input type="hidden" name="yearOfGraduation">
+                <div class="relative">
+                  <!-- Trigger -->
+                  <button type="button"
+                    class="year-trigger relative w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#999] text-[13px] text-left rounded-[4px]">
+                    <span class="year-label">Select year</span>
+                    <span class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[12px]">▼</span>
+                  </button>
+                  <!-- Year Grid -->
+                  <div style="display:none;"
+                    class="year-grid absolute top-full left-0 right-0 z-50 mt-[3px] p-[5px] border border-[#d8d8d8] bg-white rounded-[4px] max-h-[180px] overflow-y-auto">
+                  </div>
+                </div>
+
+                <!-- Error -->
+                <div class="year-error mt-[4px] text-[11px] text-[#c0392b]" style="display:none;">Please select
+                  your year of
+                  graduation.</div>
+                <div class="field-validation-messages" style="display:none;"><label class="validation-msg"></label>
+                </div>
+              </div>
+
+              <!-- Work Experience -->
+              <div class="field-control-group mb-3">
+                <label class="block mb-[2px] text-[12px] text-[#777]">Work Experience *</label>
+                <div class="field-control">
+                  <select name="experience" required
+                    class="w-full h-[36px] px-[12px] border border-[#d8d8d8] bg-white text-[#555] text-[13px] rounded-[4px] outline-none focus:border-[#573865]">
+                    <option value=""></option>
+                    <option value="Fresher">Fresher</option>
+                    <option value="0-2 Years">0-2 Years</option>
+                    <option value="2-5 Years">2-5 Years</option>
+                    <option value="5+ Years">5+ Years</option>
+                  </select>
+                </div>
+                <div class="field-validation-messages" style="display:none;">
+                  <label class="validation-msg"></label>
+                </div>
+              </div>
+
+              <!-- Consent -->
+              <div class="mb-[16px]">
+                <label class="flex items-start gap-[8px] text-[12px] text-[#666] leading-[1.6] cursor-pointer">
+                  <input type="checkbox" name="authorised" required class="mt-[3px] shrink-0">
+                  <span>I confirm this enquiry is for myself and the details above are mine.*</span>
+                </label>
+                <div class="auth-error mt-[4px] text-[11px] text-[#c0392b]" style="display:none;">Please check
+                  this box to continue.
+                </div>
+              </div>
+
+              <!-- UTM -->
+              <input type="hidden" name="utm_source">
+              <input type="hidden" name="utm_medium">
+              <input type="hidden" name="utm_campaign">
+              <input type="hidden" name="utm_term">
+              <input type="hidden" name="utm_content">
+              <input type="hidden" name="utm_id">
+              <input type="hidden" name="exact_url">
+              <input type="hidden" name="search_term">
+
+              <!-- Submit -->
+              <button type="submit"
+                class="mx-auto block min-w-[148px] h-[37px] px-6 bg-[#f68e17] text-white text-[16px] font-bold border border-[#f68e17] rounded-[5px] hover:bg-[#e57f08]">Submit</button>
+            </form>
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </template>
 
   <style type="text/css">
     body {

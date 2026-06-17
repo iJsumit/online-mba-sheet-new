@@ -1,31 +1,34 @@
-// ======================================================
-// DOM READY
-// ======================================================
-
 document.addEventListener("DOMContentLoaded", function () {
-    initMainForm();
-    initProgramToggle();
+    renderLeadForm('heroFormContainer');
+    initLeadPopup();
+    initToggles();
     initFaqAccordion();
-    initFaqToggle();
     initRecruitersCarousel();
     initCurriculumAccordion();
     initVideoModal();
     initCareerMarquee();
-    initCurriculumLoadMore();
     initFloatingApplyButton();
     initMobileMenu();
-    initDeferredScripts();
-    initPopupForm();
-    initMainQualificationForm();
+    initQualificationForms();
+    formFunction();
 });
 
-window.addEventListener("load", function () {
-    initRecruitersAutoScroll();
-});
 
-// ======================================================
-// COMMON HELPERS
-// ======================================================
+function renderLeadForm(targetId) {
+
+    const target =
+        document.getElementById(targetId);
+
+    const template =
+        document.getElementById('leadFormTemplate');
+
+    if (!target || !template) return;
+
+    target.appendChild(
+        template.content.cloneNode(true)
+    );
+}
+
 
 function getUTM(param) {
     const params = new URLSearchParams(window.location.search);
@@ -105,32 +108,50 @@ function postToSheet(form, submitBtn, btnText = "Submit") {
 }
 
 function createYearGrid(yearGrid, yearHidden, yearTrigger, yearError) {
+
     if (!yearGrid || !yearTrigger) return;
 
-    const currentYear = new Date().getFullYear();
+    const yearLabel =
+        yearTrigger.querySelector('.year-label');
 
-    for (let y = currentYear; y >= 1980; y--) {
-        const btn = document.createElement('button');
+    if (!yearGrid.children.length) {
 
-        btn.type = 'button';
-        btn.textContent = y;
+        const currentYear = new Date().getFullYear();
 
-        btn.style.cssText = `
-            font-family:Open Sans;
-            font-size:12px;
-            padding:5px 2px;
-            border:1px solid #dedede;
-            background:#fff;
-            color:#555;
-            cursor:pointer;
-            border-radius:2px;
-            text-align:center;
-            width:100%;
-        `;
+        for (let y = currentYear; y >= 1980; y--) {
 
-        btn.addEventListener('click', function () {
+            const btn = document.createElement('button');
 
-            yearGrid.querySelectorAll('button').forEach(function (b) {
+            btn.type = 'button';
+            btn.textContent = y;
+
+            btn.style.cssText = `
+                font-family:Open Sans;
+                font-size:12px;
+                padding:5px 2px;
+                border:1px solid #dedede;
+                background:#fff;
+                color:#555;
+                cursor:pointer;
+                border-radius:2px;
+                text-align:center;
+                width:100%;
+            `;
+
+            yearGrid.appendChild(btn);
+        }
+    }
+
+    yearGrid.querySelectorAll('button').forEach(btn => {
+
+        if (btn.dataset.bound) return;
+
+        btn.dataset.bound = '1';
+
+        btn.addEventListener('click', () => {
+
+            yearGrid.querySelectorAll('button').forEach(b => {
+
                 b.style.background = '#fff';
                 b.style.color = '#555';
                 b.style.borderColor = '#dedede';
@@ -142,10 +163,14 @@ function createYearGrid(yearGrid, yearHidden, yearTrigger, yearError) {
             btn.style.borderColor = '#573865';
             btn.style.fontWeight = 'bold';
 
-            yearHidden.value = y;
+            yearHidden.value = btn.textContent;
 
-            yearTrigger.childNodes[0].textContent = y;
+            if (yearLabel) {
+                yearLabel.textContent = btn.textContent;
+            }
+
             yearTrigger.style.color = '#333';
+            yearTrigger.style.borderColor = '#dedede';
 
             yearGrid.style.display = 'none';
             yearGrid.style.gridTemplateColumns = '';
@@ -153,197 +178,231 @@ function createYearGrid(yearGrid, yearHidden, yearTrigger, yearError) {
             if (yearError) {
                 yearError.style.display = 'none';
             }
-
-            yearTrigger.style.borderColor = '#dedede';
         });
+    });
 
-        yearGrid.appendChild(btn);
+    if (!yearTrigger.dataset.bound) {
+
+        yearTrigger.dataset.bound = '1';
+
+        yearTrigger.addEventListener('click', e => {
+
+            e.stopPropagation();
+
+            const isOpen =
+                yearGrid.style.display === 'grid';
+
+            yearGrid.style.display =
+                isOpen ? 'none' : 'grid';
+
+            yearGrid.style.gridTemplateColumns =
+                isOpen ? '' : 'repeat(3,1fr)';
+        });
     }
 
-    yearTrigger.addEventListener('click', function (e) {
-        e.stopPropagation();
+    if (!yearGrid.dataset.docBound) {
 
-        const isOpen = yearGrid.style.display === 'grid';
+        yearGrid.dataset.docBound = '1';
 
-        yearGrid.style.display = isOpen ? 'none' : 'grid';
-        yearGrid.style.gridTemplateColumns = isOpen ? '' : 'repeat(3,1fr)';
-    });
+        document.addEventListener('click', e => {
 
-    document.addEventListener('click', function (e) {
-        if (!yearGrid.contains(e.target) && e.target !== yearTrigger) {
-            yearGrid.style.display = 'none';
-            yearGrid.style.gridTemplateColumns = '';
-        }
-    });
+            if (
+                !yearGrid.contains(e.target) &&
+                !yearTrigger.contains(e.target)
+            ) {
+
+                yearGrid.style.display = 'none';
+                yearGrid.style.gridTemplateColumns = '';
+            }
+        });
+    }
 }
 
 function resetYearSelection(yearHidden, yearTrigger, yearGrid) {
-
-    if (yearHidden) {
-        yearHidden.value = '';
-    }
-
-    if (yearTrigger) {
-        yearTrigger.childNodes[0].textContent = 'Select year';
-        yearTrigger.style.color = '#999';
-    }
-
-    if (yearGrid) {
-        yearGrid.querySelectorAll('button').forEach(function (b) {
-            b.style.background = '#fff';
-            b.style.color = '#555';
-            b.style.borderColor = '#dedede';
-            b.style.fontWeight = 'normal';
-        });
-    }
-}
-
-// ======================================================
-// MAIN FORM
-// ======================================================
-
-function initMainForm() {
-
-    const form = document.getElementById('frmrlp-block-41');
-    const submitBtn = document.getElementById('form-submit-button');
-
-    if (!form) return;
-
-    form.addEventListener('submit', function (e) {
-
-        e.preventDefault();
-
-        if (!validateMainForm()) return;
-
-        captureUTMFields(form);
-
-        const formData = new FormData(form);
-
-        console.log("===== FORM DATA =====");
-
-        for (let [key, value] of formData.entries()) {
-            console.log(key, ":", value);
-        }
-
-        if (submitBtn) {
-            submitBtn.innerHTML = "Processing...";
-            submitBtn.disabled = true;
-        }
-
-        postToSheet(form, submitBtn);
+    yearHidden.value = '';
+    yearTrigger.querySelector('.year-label').textContent = 'Select year';
+    yearTrigger.style.color = '#999';
+    yearGrid.querySelectorAll('button').forEach(b => {
+        b.style.background = '#fff';
+        b.style.color = '#555';
+        b.style.borderColor = '#dedede';
+        b.style.fontWeight = 'normal';
     });
 }
 
-function validateMainForm() {
+function formFunction() {
+    if (form.dataset.submitInit) return;
 
+form.dataset.submitInit = '1';
+    document.querySelectorAll('.lead-form').forEach(form => {
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            if (!validateMainForm(form)) return;
+            captureUTMFields(form);
+            const submitBtn = form.querySelector('[type="submit"]');
+            const formData = new FormData(form);
+            console.log(Object.fromEntries(formData.entries()));
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Processing...'; }
+            // postToSheet(form, submitBtn);
+        });
+    });
+}
+
+function validateMainForm(form) {
     let ok = true;
 
-    const name = document.getElementById('FirstName');
-    const email = document.getElementById('EmailAddress');
-    const phone = document.getElementById('Phone');
-    const qual = document.getElementById('mx_Highest_Qualification');
-    const work = document.getElementById('mx_Work_Experience');
-    const auth = document.getElementById('mx_I_authorised');
+    const name = form.querySelector('[name="name"]');
+    const email = form.querySelector('[name="email"]');
+    const phone = form.querySelector('[name="phone"]');
+    const qual = form.querySelector('[name="qualification"]');
+    const work = form.querySelector('[name="experience"]');
+    const auth = form.querySelector('[name="authorised"]');
 
-    const yearWrapper = document.getElementById('year-of-grad-wrapper');
-    const yearHidden = document.getElementById('mx_Year_of_Graduation');
-    const yearTrigger = document.getElementById('year-trigger');
-    const yearError = document.getElementById('year-error');
+    const yearWrapper =
+        form.querySelector('.year-of-grad-wrapper');
 
-    if (name && !name.value.trim()) {
+    const yearHidden =
+        form.querySelector('[name="yearOfGraduation"]');
+
+    const yearTrigger =
+        form.querySelector('.year-trigger');
+
+    const yearError =
+        form.querySelector('.year-error');
+
+    const authErr =
+        form.querySelector('.auth-error');
+
+    if (!name.value.trim()) {
         showFieldError(name, 'Name is required.');
         ok = false;
     } else {
         clearFieldError(name);
     }
 
-    if (email && !email.value.trim()) {
-        showFieldError(email, 'Email is required.');
+    const emailValue = email.value.trim();
+
+    if (!emailValue) {
+
+        showFieldError(
+            email,
+            'Email is required.'
+        );
+
         ok = false;
-    }
-    else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-        showFieldError(email, 'Enter a valid email.');
+
+    } else if (
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
+    ) {
+
+        showFieldError(
+            email,
+            'Enter a valid email.'
+        );
+
         ok = false;
-    }
-    else {
+
+    } else {
+
         clearFieldError(email);
+
     }
 
-    if (phone && !phone.value.trim()) {
-        showFieldError(phone, 'Phone number is required.');
+    const phoneValue = phone.value.trim();
+
+    if (!phoneValue) {
+
+        showFieldError(
+            phone,
+            'Phone number is required.'
+        );
+
         ok = false;
-    }
-    else if (phone && phone.value.trim().length !== 10) {
-        showFieldError(phone, 'Enter a valid 10-digit phone number.');
+
+    } else if (
+        !/^\d{10}$/.test(phoneValue)
+    ) {
+
+        showFieldError(
+            phone,
+            'Enter a valid 10-digit phone number.'
+        );
+
         ok = false;
-    }
-    else {
+
+    } else {
+
         clearFieldError(phone);
+
     }
 
-    if (qual && !qual.value) {
-        showFieldError(qual, 'Please select your qualification.');
+    if (!qual.value) {
+
+        showFieldError(
+            qual,
+            'Please select your qualification.'
+        );
+
         ok = false;
+
     } else {
+
         clearFieldError(qual);
+
     }
 
-    if (yearWrapper && yearWrapper.style.display !== 'none') {
+    if (
+        yearWrapper.style.display !== 'none' &&
+        !yearHidden.value
+    ) {
 
-        if (!yearHidden || !yearHidden.value) {
+        yearTrigger.style.borderColor =
+            '#c0392b';
 
-            if (yearTrigger) {
-                yearTrigger.style.borderColor = '#c0392b';
-            }
+        yearError.style.display = '';
 
-            if (yearError) {
-                yearError.style.display = '';
-            }
-
-            ok = false;
-
-        } else {
-
-            if (yearTrigger) {
-                yearTrigger.style.borderColor = '#dedede';
-            }
-
-            if (yearError) {
-                yearError.style.display = 'none';
-            }
-        }
-    }
-
-    if (work && !work.value) {
-        showFieldError(work, 'Please select your work experience.');
         ok = false;
+
     } else {
+
+        yearTrigger.style.borderColor =
+            '#dedede';
+
+        yearError.style.display = 'none';
+
+    }
+
+    if (!work.value) {
+
+        showFieldError(
+            work,
+            'Please select your work experience.'
+        );
+
+        ok = false;
+
+    } else {
+
         clearFieldError(work);
+
     }
 
-    const authErr = document.getElementById('auth-error');
+    if (!auth.checked) {
 
-    if (auth && !auth.checked) {
-
-        if (authErr) {
-            authErr.style.display = '';
-        }
+        authErr.style.display = '';
 
         ok = false;
 
     } else {
 
-        if (authErr) {
-            authErr.style.display = 'none';
-        }
+        authErr.style.display = 'none';
+
     }
 
     return ok;
-}
 
-// ======================================================
-// FORM ERRORS
-// ======================================================
+
+}
 
 function showFieldError(inputEl, msg) {
 
@@ -394,40 +453,6 @@ function clearFieldError(inputEl) {
     }
 }
 
-// ======================================================
-// PROGRAM TOGGLE
-// ======================================================
-
-function initProgramToggle() {
-
-    const toggleBtn = document.getElementById("toggleBtn");
-    const extraCards = document.getElementById("extraCards");
-
-    if (!toggleBtn || !extraCards) return;
-
-    toggleBtn.addEventListener("click", () => {
-
-        extraCards.classList.toggle("hidden");
-
-        if (extraCards.classList.contains("hidden")) {
-
-            toggleBtn.innerHTML = `Read More <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="inline-block ml-2 align-middle"><path d="m6 9 6 6 6-6"></path></svg>`;
-
-            document.getElementById("program").scrollIntoView({
-                behavior: "smooth"
-            });
-
-        } else {
-
-            toggleBtn.innerHTML = `Show Less <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="inline-block ml-2 align-middle"><path d="m18 15-6-6-6 6"></path></svg>`;
-        }
-    });
-}
-
-// ======================================================
-// FAQ
-// ======================================================
-
 function initFaqAccordion() {
 
     const faqBtns = document.querySelectorAll('.faq-btn');
@@ -467,36 +492,6 @@ function initFaqAccordion() {
         });
     });
 }
-
-function initFaqToggle() {
-
-    const toggleFaqBtn = document.getElementById("toggleFaqBtn");
-    const extraFaqs = document.getElementById("extraFaqs");
-
-    if (!toggleFaqBtn || !extraFaqs) return;
-
-    toggleFaqBtn.addEventListener("click", () => {
-
-        extraFaqs.classList.toggle("hidden");
-
-        if (extraFaqs.classList.contains("hidden")) {
-
-            toggleFaqBtn.innerHTML = `Read More`;
-
-            document.getElementById("faq").scrollIntoView({
-                behavior: "smooth"
-            });
-
-        } else {
-
-            toggleFaqBtn.innerHTML = `Show Less`;
-        }
-    });
-}
-
-// ======================================================
-// RECRUITERS
-// ======================================================
 
 function initRecruitersCarousel() {
 
@@ -601,15 +596,6 @@ function initRecruitersCarousel() {
     });
 }
 
-function initRecruitersAutoScroll() {
-    // intentionally preserved empty hook
-    // because tumhara original behaviour load pe tied tha
-}
-
-// ======================================================
-// CURRICULUM
-// ======================================================
-
 function initCurriculumAccordion() {
 
     const root = document.querySelector('[data-accordion="curriculum"]');
@@ -673,9 +659,26 @@ function initCurriculumAccordion() {
     });
 }
 
-// ======================================================
-// VIDEO MODAL
-// ======================================================
+function initToggles() {
+    document.querySelectorAll("[data-toggle]").forEach(btn => {
+        const text = btn.querySelector(".toggle-text");
+        const icon = btn.querySelector("svg");
+        btn.addEventListener("click", () => {
+            const content = document.getElementById(btn.dataset.toggle);
+            if (!content) return;
+            const hidden = content.classList.toggle("hidden");
+            text && (text.textContent = hidden ? "Read More" : "Show Less");
+            icon?.classList.toggle("rotate-180", !hidden);
+            if (btn.dataset.scroll && hidden) {
+                document.getElementById(btn.dataset.scroll)
+                    ?.scrollIntoView({
+                        behavior: "smooth"
+                    });
+            }
+            btn.hasAttribute("aria-expanded") && btn.setAttribute("aria-expanded", !hidden);
+        });
+    });
+}
 
 function initVideoModal() {
 
@@ -760,10 +763,6 @@ function initVideoModal() {
         }
     });
 }
-
-// ======================================================
-// CAREER MARQUEE
-// ======================================================
 
 function initCareerMarquee() {
 
@@ -852,45 +851,6 @@ function initCareerMarquee() {
     requestAnimationFrame(tick);
 }
 
-// ======================================================
-// CURRICULUM LOAD MORE
-// ======================================================
-
-function initCurriculumLoadMore() {
-
-    const btn = document.getElementById("curriculumLoadMore");
-    const more = document.getElementById("curriculumMore");
-
-    if (!btn || !more) return;
-
-    btn.addEventListener("click", function () {
-
-        const expanded =
-            btn.getAttribute("aria-expanded") === "true";
-
-        if (expanded) {
-
-            more.classList.add("hidden");
-
-            btn.setAttribute("aria-expanded", "false");
-
-            btn.innerHTML = `Read More`;
-
-        } else {
-
-            more.classList.remove("hidden");
-
-            btn.setAttribute("aria-expanded", "true");
-
-            btn.innerHTML = `Show Less`;
-        }
-    });
-}
-
-// ======================================================
-// FLOATING APPLY BUTTON
-// ======================================================
-
 function initFloatingApplyButton() {
 
     const btn = document.getElementById('floatingApplyNow');
@@ -950,10 +910,6 @@ function initFloatingApplyButton() {
     });
 }
 
-// ======================================================
-// MOBILE MENU
-// ======================================================
-
 function initMobileMenu() {
 
     const btn = document.getElementById("mobileMenuBtn");
@@ -991,194 +947,59 @@ function initMobileMenu() {
     });
 }
 
-// ======================================================
-// DEFERRED SCRIPTS
-// ======================================================
+function initQualificationForms() {
+    if (form.dataset.qualInit) return;
 
-function initDeferredScripts() {
-
-    let loaded = false;
-
-    function loadDeferredScripts() {
-
-        if (loaded) return;
-
-        loaded = true;
-
-        document.querySelectorAll('script[data-delay]').forEach(script => {
-
-            const s = document.createElement('script');
-
-            s.src = script.dataset.delay;
-
-            s.defer = true;
-
-            document.body.appendChild(s);
-        });
-    }
-
-    ['scroll', 'mousemove', 'touchstart'].forEach(e => {
-
-        window.addEventListener(e, loadDeferredScripts, {
-            once: true
-        });
-    });
-}
-
-// ======================================================
-// POPUP FORM
-// ======================================================
-
-function initPopupForm() {
-
-    const overlay = document.getElementById('li-popup-overlay');
-
-    if (!overlay) return;
-
-    // intentionally preserved structure
-    // warna tera popup tootega aur phir blame JavaScript pe aayega
-}
-
-// ======================================================
-// MAIN QUALIFICATION
-// ======================================================
-
-function initMainQualificationForm() {
-
-    const qualSel = document.getElementById('mx_Highest_Qualification');
-
-    const yearWrapper = document.getElementById('year-of-grad-wrapper');
-
-    const blockMsg = document.getElementById('qual-block-msg');
-
-    const submitBtn = document.getElementById('form-submit-button');
-
-    const yearHidden = document.getElementById('mx_Year_of_Graduation');
-
-    const yearGrid = document.getElementById('year-grid');
-
-    const yearTrigger = document.getElementById('year-trigger');
-
-    const yearError = document.getElementById('year-error');
-
-    const leadTypeField = document.getElementById('mx_Lead_Type');
-
-    const ELIGIBLE = [
-        'Graduation completed',
-        'Post-graduation completed'
-    ];
-
-    const INELIGIBLE = [
-        'Currently pursuing graduation',
-        '12th / Diploma only'
-    ];
-
-    createYearGrid(
-        yearGrid,
-        yearHidden,
-        yearTrigger,
-        yearError
-    );
-
-    function handleQualChange() {
-
-        const val = qualSel ? qualSel.value : '';
-
-        if (ELIGIBLE.includes(val)) {
-
-            if (yearWrapper) {
-                yearWrapper.style.display = '';
-            }
-
-            if (blockMsg) {
-                blockMsg.style.display = 'none';
-            }
-
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.style.opacity = '';
-            }
-
-            if (leadTypeField) {
-                leadTypeField.value = 'Graduate Lead';
-            }
-
-        } else if (INELIGIBLE.includes(val)) {
-
-            if (yearWrapper) {
-                yearWrapper.style.display = 'none';
-
-                resetYearSelection(
-                    yearHidden,
-                    yearTrigger,
-                    yearGrid
-                );
-            }
-
-            if (blockMsg) {
-                blockMsg.style.display = '';
-            }
-
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.style.opacity = '';
-            }
-
-            if (leadTypeField) {
-                leadTypeField.value = 'Non-Graduate Enquiry';
-            }
-
-        } else {
-
-            if (yearWrapper) {
-                yearWrapper.style.display = 'none';
-
-                resetYearSelection(
-                    yearHidden,
-                    yearTrigger,
-                    yearGrid
-                );
-            }
-
-            if (blockMsg) {
-                blockMsg.style.display = 'none';
-            }
-
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.style.opacity = '';
-            }
-
-            if (leadTypeField) {
-                leadTypeField.value = 'Graduate Lead';
+    form.dataset.qualInit = '1';
+    document.querySelectorAll('.lead-form').forEach(form => {
+        const qualSel = form.querySelector('[name="qualification"]');
+        const yearWrapper = form.querySelector('.year-of-grad-wrapper');
+        const blockMsg = form.querySelector('.qual-block-msg');
+        const yearHidden = form.querySelector('[name="yearOfGraduation"]');
+        const yearGrid = form.querySelector('.year-grid');
+        const yearTrigger = form.querySelector('.year-trigger');
+        const yearError = form.querySelector('.year-error');
+        const ELIGIBLE = ['Graduation completed', 'Post-graduation completed'];
+        createYearGrid(yearGrid, yearHidden, yearTrigger, yearError);
+        function handleQualChange() {
+            const isEligible = ELIGIBLE.includes(qualSel.value);
+            yearWrapper.style.display = isEligible ? '' : 'none';
+            blockMsg.style.display = qualSel.value && !isEligible ? '' : 'none';
+            if (!isEligible) {
+                resetYearSelection(yearHidden, yearTrigger, yearGrid);
             }
         }
-    }
-
-    if (qualSel) {
         qualSel.addEventListener('change', handleQualChange);
-    }
-
-    [
-        'FirstName',
-        'EmailAddress',
-        'Phone',
-        'mx_Highest_Qualification',
-        'mx_Work_Experience'
-    ].forEach(function (id) {
-
-        const el = document.getElementById(id);
-
-        if (el) {
-            el.addEventListener('input', function () {
-                clearFieldError(el);
-            });
-        }
-
-        if (el) {
-            el.addEventListener('change', function () {
-                clearFieldError(el);
-            });
-        }
     });
+}
+
+function initLeadPopup() {
+
+    const popup =
+        document.getElementById('leadPopup');
+
+    const container =
+        document.getElementById('popupFormContainer');
+
+    const closeBtn =
+        document.getElementById('closePopup');
+
+    if (!popup || !container) return;
+
+    setTimeout(() => {
+
+        renderLeadForm('popupFormContainer');
+
+        popup.classList.remove('hidden');
+
+        initQualificationForms();
+
+        formFunction();
+
+    }, 5000);
+
+    closeBtn?.addEventListener(
+        'click',
+        () => popup.classList.add('hidden')
+    );
 }
